@@ -23,7 +23,7 @@ public abstract class Restful {
     protected String role = null;
     protected String operator = null;
 
-//    @Autowired
+    //    @Autowired
 //    RegistryValidator          registryService;
     protected User currentUser = null;
     protected String operatorAddress = null;

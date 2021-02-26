@@ -28,7 +28,7 @@ public class RelateUserUtils {
     /**
      * 添加与服务相关的Owner
      *
-     * @param usernames 用于添加的用户名
+     * @param usernames   用于添加的用户名
      * @param serviceName 不含通配符
      */
     public static void addOwnersOfService(Set<String> usernames, String serviceName,
@@ -45,7 +45,7 @@ public class RelateUserUtils {
     /**
      * 添加与服务模式相关的Owner
      *
-     * @param usernames 用于添加的用户名
+     * @param usernames          用于添加的用户名
      * @param serviceNamePattern 服务模式，Glob模式
      */
     public static void addOwnersOfServicePattern(Set<String> usernames, String serviceNamePattern,

@@ -13,17 +13,16 @@
  - See the License for the specific language governing permissions and
  - limitations under the License.
 -->
-<beans xmlns="http://www.springframework.org/schema/beans"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xmlns:context="http://www.springframework.org/schema/context"
-    xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+<beans xmlns:context="http://www.springframework.org/schema/context" xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" default-autowire="byName"
+    xmlns="http://www.springframework.org/schema/beans"
     xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
     http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd
-    http://code.alibabatech.com/schema/dubbo http://code.alibabatech.com/schema/dubbo/dubbo.xsd" default-autowire="byName">
-    
+    http://code.alibabatech.com/schema/dubbo http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
+
     <context:annotation-config />
-    <bean id="demoInterceptor" class="com.alibaba.dubbo.config.spring.action.DemoInterceptor" />
-	<bean id="demoAdvisor" class="org.springframework.aop.support.RegexpMethodPointcutAdvisor">
+    <bean class="com.alibaba.dubbo.config.spring.action.DemoInterceptor" id="demoInterceptor" />
+    <bean class="org.springframework.aop.support.RegexpMethodPointcutAdvisor" id="demoAdvisor">
         <property name="advice" ref="demoInterceptor" />
         <property name="patterns">
             <list>
@@ -31,7 +30,7 @@
             </list>
         </property>
     </bean>
-    <bean id="demoProxyCreator" class="org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator">
+    <bean class="org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator" id="demoProxyCreator">
         <property name="beanNames">
             <list>
                 <value>demoService</value>
@@ -46,16 +45,16 @@
 
     <!-- 当前应用信息配置 -->
     <dubbo:application name="consumer" />
-    
+
     <!-- 连接注册中心配置 -->
     <dubbo:registry address="N/A" />
-    
+
     <!-- 引用服务配置 -->
-    <dubbo:reference id="demoService" interface="com.alibaba.dubbo.config.spring.api.DemoService" url="dubbo://127.0.0.1:20813" scope="remote">
-    </dubbo:reference>
-     
-	<bean id="demoActionBySetter" class="com.alibaba.dubbo.config.spring.action.DemoActionBySetter" />
- 
-	<bean id="demoActionByAnnotation" class="com.alibaba.dubbo.config.spring.action.DemoActionByAnnotation" />
- 
+    <dubbo:reference id="demoService" interface="com.alibaba.dubbo.config.spring.api.DemoService"
+        scope="remote" url="dubbo://127.0.0.1:20813"></dubbo:reference>
+
+    <bean class="com.alibaba.dubbo.config.spring.action.DemoActionBySetter" id="demoActionBySetter" />
+
+    <bean class="com.alibaba.dubbo.config.spring.action.DemoActionByAnnotation" id="demoActionByAnnotation" />
+
 </beans>

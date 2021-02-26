@@ -34,119 +34,6 @@ import static org.junit.matchers.JUnitMatchers.containsString;
  * @author ding.lid
  */
 public class SwitchClusterTest {
-    static Invoker<String> createInvoker(final Boolean available, final Boolean connected, final Integer invokerCount) {
-        return new Invoker<String>() {
-            public Class<String> getInterface() {
-                return null;
-            }
-
-            public Result invoke(Invocation invocation) throws RpcException {
-                return null;
-            }
-
-            public URL getUrl() {
-                StringBuilder sb = new StringBuilder("dubbo://1.2.3.4:20880?k1=v1");
-                if(connected != null) {
-                    sb.append("&connected=" + connected);
-                }
-                if(invokerCount != null) {
-                    sb.append("&" + Constants.INVOKER_INSIDE_INVOKER_COUNT_KEY +
-                            "=" + invokerCount);
-                }
-                return URL.valueOf(sb.toString());
-            }
-
-            public boolean isAvailable() {
-                return available;
-            }
-
-            public void destroy() {
-            }
-        };
-    }
-
-    static List<Invoker<String>> createInvokerList(Object[][] paramters) {
-        List<Invoker<String>> ret = new ArrayList<Invoker<String>>();
-
-        for(Object[] paramter : paramters) {
-            ret.add(createInvoker((Boolean)(paramter[0]), (Boolean)(paramter[1]), (Integer)(paramter[2])));
-        }
-
-        return ret;
-    }
-
-    @Test
-    public void test_getEffectiveInvokers() throws Exception {
-        {
-            // 全部OK
-            List<Invoker<String>>  data = createInvokerList(new Object[][]{
-                    {true, true, 1},
-                    {true, true, 1},
-                    {true, true, 1},
-                    {true, true, 1},
-            });
-
-            List<Invoker<String>> result = SwitchCluster.getEffectiveInvokers(data);
-            assertEquals(data, result);
-        }
-        {
-            // 有connected=false
-            List<Invoker<String>>  data = createInvokerList(new Object[][]{
-                    {true, true, 1},
-                    {true, false, 1},
-                    {true, false, 1},
-                    {true, true, 1},
-            });
-
-            List<Invoker<String>> result = SwitchCluster.getEffectiveInvokers(data);
-            assertEquals(2, result.size());
-            assertSame(data.get(0), result.get(0));
-            assertSame(data.get(3), result.get(1));
-        }
-        {
-            // 有available = false
-            List<Invoker<String>>  data = createInvokerList(new Object[][]{
-                    {true, true, 1},
-                    {false, true, 1},
-                    {false, true, 1},
-                    {true, true, 1},
-            });
-
-            List<Invoker<String>> result = SwitchCluster.getEffectiveInvokers(data);
-            assertEquals(2, result.size());
-            assertSame(data.get(0), result.get(0));
-            assertSame(data.get(3), result.get(1));
-        }
-        {
-            // 有connected=false & available = false
-            List<Invoker<String>>  data = createInvokerList(new Object[][]{
-                    {true, true, 1},
-                    {true, false, 1},
-                    {false, true, 1},
-                    {true, true, 1},
-            });
-
-            List<Invoker<String>> result = SwitchCluster.getEffectiveInvokers(data);
-            assertEquals(2, result.size());
-            assertSame(data.get(0), result.get(0));
-            assertSame(data.get(3), result.get(1));
-        }
-        {
-            // 有connected全 false
-            List<Invoker<String>>  data = createInvokerList(new Object[][]{
-                    {true, false, 1},
-                    {false, false, 1},
-                    {false, false, 1},
-                    {true, false, 1},
-            });
-
-            List<Invoker<String>> result = SwitchCluster.getEffectiveInvokers(data);
-            assertEquals(2, result.size());
-            assertSame(data.get(0), result.get(0));
-            assertSame(data.get(3), result.get(1));
-        }
-    }
-
     Directory directory = new Directory<String>() {
 
         public Class<String> getInterface() {
@@ -169,10 +56,123 @@ public class SwitchClusterTest {
         }
     };
 
+    static Invoker<String> createInvoker(final Boolean available, final Boolean connected, final Integer invokerCount) {
+        return new Invoker<String>() {
+            public Class<String> getInterface() {
+                return null;
+            }
+
+            public Result invoke(Invocation invocation) throws RpcException {
+                return null;
+            }
+
+            public URL getUrl() {
+                StringBuilder sb = new StringBuilder("dubbo://1.2.3.4:20880?k1=v1");
+                if (connected != null) {
+                    sb.append("&connected=" + connected);
+                }
+                if (invokerCount != null) {
+                    sb.append("&" + Constants.INVOKER_INSIDE_INVOKER_COUNT_KEY +
+                            "=" + invokerCount);
+                }
+                return URL.valueOf(sb.toString());
+            }
+
+            public boolean isAvailable() {
+                return available;
+            }
+
+            public void destroy() {
+            }
+        };
+    }
+
+    static List<Invoker<String>> createInvokerList(Object[][] paramters) {
+        List<Invoker<String>> ret = new ArrayList<Invoker<String>>();
+
+        for (Object[] paramter : paramters) {
+            ret.add(createInvoker((Boolean) (paramter[0]), (Boolean) (paramter[1]), (Integer) (paramter[2])));
+        }
+
+        return ret;
+    }
+
+    @Test
+    public void test_getEffectiveInvokers() throws Exception {
+        {
+            // 全部OK
+            List<Invoker<String>> data = createInvokerList(new Object[][]{
+                    {true, true, 1},
+                    {true, true, 1},
+                    {true, true, 1},
+                    {true, true, 1},
+            });
+
+            List<Invoker<String>> result = SwitchCluster.getEffectiveInvokers(data);
+            assertEquals(data, result);
+        }
+        {
+            // 有connected=false
+            List<Invoker<String>> data = createInvokerList(new Object[][]{
+                    {true, true, 1},
+                    {true, false, 1},
+                    {true, false, 1},
+                    {true, true, 1},
+            });
+
+            List<Invoker<String>> result = SwitchCluster.getEffectiveInvokers(data);
+            assertEquals(2, result.size());
+            assertSame(data.get(0), result.get(0));
+            assertSame(data.get(3), result.get(1));
+        }
+        {
+            // 有available = false
+            List<Invoker<String>> data = createInvokerList(new Object[][]{
+                    {true, true, 1},
+                    {false, true, 1},
+                    {false, true, 1},
+                    {true, true, 1},
+            });
+
+            List<Invoker<String>> result = SwitchCluster.getEffectiveInvokers(data);
+            assertEquals(2, result.size());
+            assertSame(data.get(0), result.get(0));
+            assertSame(data.get(3), result.get(1));
+        }
+        {
+            // 有connected=false & available = false
+            List<Invoker<String>> data = createInvokerList(new Object[][]{
+                    {true, true, 1},
+                    {true, false, 1},
+                    {false, true, 1},
+                    {true, true, 1},
+            });
+
+            List<Invoker<String>> result = SwitchCluster.getEffectiveInvokers(data);
+            assertEquals(2, result.size());
+            assertSame(data.get(0), result.get(0));
+            assertSame(data.get(3), result.get(1));
+        }
+        {
+            // 有connected全 false
+            List<Invoker<String>> data = createInvokerList(new Object[][]{
+                    {true, false, 1},
+                    {false, false, 1},
+                    {false, false, 1},
+                    {true, false, 1},
+            });
+
+            List<Invoker<String>> result = SwitchCluster.getEffectiveInvokers(data);
+            assertEquals(2, result.size());
+            assertSame(data.get(0), result.get(0));
+            assertSame(data.get(3), result.get(1));
+        }
+    }
+
     @Test
     public void test_getSuitableInvoker() throws Exception {
         {
-            List<Invoker<String>>  data = createInvokerList(new Object[][]{
+            List<Invoker<String>> data = createInvokerList(new Object[][]{
                     {true, true, 100},
                     {true, true, 1},
                     {true, true, 1},
@@ -183,7 +183,7 @@ public class SwitchClusterTest {
             assertSame(data.get(0), result);
         }
         {
-            List<Invoker<String>>  data = createInvokerList(new Object[][]{
+            List<Invoker<String>> data = createInvokerList(new Object[][]{
                     {true, true, 1},
                     {true, true, 2},
                     {true, true, 3},
@@ -194,7 +194,7 @@ public class SwitchClusterTest {
             assertSame(data.get(3), result);
         }
         {
-            List<Invoker<String>>  data = createInvokerList(new Object[][]{
+            List<Invoker<String>> data = createInvokerList(new Object[][]{
                     {true, true, 1},
                     {true, true, 2},
                     {true, true, 3},
@@ -211,8 +211,7 @@ public class SwitchClusterTest {
         try {
             SwitchCluster.getSuitableInvoker(new ArrayList<Invoker<String>>(), directory);
             fail();
-        }
-        catch (RpcException expected) {
+        } catch (RpcException expected) {
             assertThat(expected.getMessage(),
                     containsString("No provider available in"));
         }

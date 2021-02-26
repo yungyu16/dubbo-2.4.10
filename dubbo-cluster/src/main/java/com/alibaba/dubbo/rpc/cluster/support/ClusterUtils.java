@@ -1,12 +1,12 @@
 /*
  * Copyright 1999-2011 Alibaba Group.
- *  
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *  
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- *  
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -15,27 +15,30 @@
  */
 package com.alibaba.dubbo.rpc.cluster.support;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import com.alibaba.dubbo.common.Constants;
 import com.alibaba.dubbo.common.URL;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * ClusterUtils
- * 
+ *
  * @author william.liangf
  */
 public class ClusterUtils {
-    
+
+    private ClusterUtils() {
+    }
+
     public static URL mergeUrl(URL remoteUrl, Map<String, String> localMap) {
         Map<String, String> map = new HashMap<String, String>();
         Map<String, String> remoteMap = remoteUrl.getParameters();
-        
-        
+
+
         if (remoteMap != null && remoteMap.size() > 0) {
             map.putAll(remoteMap);
-            
+
             //线程池配置不使用提供者的
             map.remove(Constants.THREAD_NAME_KEY);
             map.remove(Constants.DEFAULT_KEY_PREFIX + Constants.THREAD_NAME_KEY);
@@ -55,11 +58,11 @@ public class ClusterUtils {
             map.remove(Constants.ALIVE_KEY);
             map.remove(Constants.DEFAULT_KEY_PREFIX + Constants.ALIVE_KEY);
         }
-        
+
         if (localMap != null && localMap.size() > 0) {
             map.putAll(localMap);
         }
-        if (remoteMap != null && remoteMap.size() > 0) { 
+        if (remoteMap != null && remoteMap.size() > 0) {
             // 版本号使用提供者的
             String dubbo = remoteMap.get(Constants.DUBBO_VERSION_KEY);
             if (dubbo != null && dubbo.length() > 0) {
@@ -95,6 +98,4 @@ public class ClusterUtils {
         return remoteUrl.clearParameters().addParameters(map);
     }
 
-    private ClusterUtils() {}
-    
 }

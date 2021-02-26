@@ -19,7 +19,6 @@ import com.alibaba.dubbo.governance.web.common.module.screen.Restful;
 
 /**
  * @author ding.lid
- *
  */
 public class Privileges extends Restful {
 

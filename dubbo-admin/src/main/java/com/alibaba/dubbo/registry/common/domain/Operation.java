@@ -21,8 +21,8 @@ import java.util.List;
 
 /**
  * 记录错误信息以及记录所有的人为的操作
- * @author rain.chenjr
  *
+ * @author rain.chenjr
  */
 public class Operation extends Entity {
 

@@ -82,6 +82,7 @@ public class ServicePrivilegeCheckValve extends AbstractValve {
 
     /**
      * 无权限跳转
+     *
      * @param rundata
      */
     private void redirectToNoRight(TurbineRunData rundata) {

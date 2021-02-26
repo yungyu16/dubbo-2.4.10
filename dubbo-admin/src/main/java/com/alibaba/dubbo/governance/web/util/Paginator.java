@@ -57,10 +57,10 @@ public class Paginator implements Serializable, Cloneable {
     /**
      * 完整的分页构造器。
      *
-     * @param currentPage 。
+     * @param currentPage     。
      * @param totalItems(必须项) 记录总数，大于等于0
      * @param sliderSize
-     * @param itemsPerPage 每页项数。
+     * @param itemsPerPage    每页项数。
      */
     public void initPagination(int currentPageT, int totalItemsT, int sliderSizeT, int itemsPerPageT, String path) {
         this.totalItems = (totalItemsT > 0) ? totalItemsT : 0;

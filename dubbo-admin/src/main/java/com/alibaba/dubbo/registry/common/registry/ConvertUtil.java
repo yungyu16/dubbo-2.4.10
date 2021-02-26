@@ -23,7 +23,6 @@ import java.util.Map;
 
 /**
  * @author ding.lid
- *
  */
 public class ConvertUtil {
     private ConvertUtil() {

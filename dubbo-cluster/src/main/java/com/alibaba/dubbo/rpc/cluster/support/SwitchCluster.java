@@ -1,12 +1,12 @@
 /*
  * Copyright 1999-2011 Alibaba Group.
- *  
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *  
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- *  
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -14,9 +14,6 @@
  * limitations under the License.
  */
 package com.alibaba.dubbo.rpc.cluster.support;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import com.alibaba.dubbo.common.Constants;
 import com.alibaba.dubbo.common.logger.Logger;
@@ -29,9 +26,12 @@ import com.alibaba.dubbo.rpc.cluster.Cluster;
 import com.alibaba.dubbo.rpc.cluster.Directory;
 import com.alibaba.dubbo.rpc.cluster.LoadBalance;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * SwitchCluster.
- *
+ * <p>
  * 支持在多个Invoker（注册中心Invoker，内部Wrapper了多个Invoker）之间切换。
  * <ol>
  * <li>选用连接着（Connected）的注册中心。《br />
@@ -41,14 +41,12 @@ import com.alibaba.dubbo.rpc.cluster.LoadBalance;
  * 缺省比例因子是<code>2</code>。
  * </ol>
  *
- * 
  * @author ding.lid
  */
 public class SwitchCluster implements Cluster {
 
-    private static final Logger logger = LoggerFactory.getLogger(SwitchCluster.class);
-    
     public static final String NAME = "switch";
+    private static final Logger logger = LoggerFactory.getLogger(SwitchCluster.class);
 
     static <T> boolean isConnectedInvoker(Invoker<T> invoker) {
         return invoker.getUrl().getParameter(Constants.INVOKER_CONNECTED_KEY, true);
@@ -63,7 +61,7 @@ public class SwitchCluster implements Cluster {
         List<Invoker<T>> availableAndConnectedInvokers = new ArrayList<Invoker<T>>();
 
         for (Invoker<T> invoker : invokers) {
-            if(invoker.isAvailable()) {
+            if (invoker.isAvailable()) {
                 if (isConnectedInvoker(invoker)) {
                     availableAndConnectedInvokers.add(invoker);
                 }
@@ -72,15 +70,15 @@ public class SwitchCluster implements Cluster {
         }
 
         List<Invoker<T>> effectiveInvokers = availableAndConnectedInvokers;
-        if(effectiveInvokers.isEmpty()) effectiveInvokers = availableInvokers; // 都不是connected，则使用available
+        if (effectiveInvokers.isEmpty()) effectiveInvokers = availableInvokers; // 都不是connected，则使用available
         return effectiveInvokers;
     }
 
     static <T> Invoker<T> getSuitableInvoker(List<Invoker<T>> invokers, Directory<T> directory) {
-        if(invokers.isEmpty()) {
+        if (invokers.isEmpty()) {
             throw new RpcException("No provider available in " + invokers);
         }
-        if(invokers.size() == 1) {
+        if (invokers.size() == 1) {
             return invokers.get(0);
         }
 
@@ -89,15 +87,15 @@ public class SwitchCluster implements Cluster {
         int i = 0;
         LOOP_BEFORE:
         for (; i < invokers.size(); i++) {
-            Invoker<T> before =  invokers.get(i);
+            Invoker<T> before = invokers.get(i);
             for (int j = i + 1; j < invokers.size(); j++) {
-                Invoker<T> after =  invokers.get(j);
-                if(factor * getInvokerCount(before) <= getInvokerCount(after)) {
+                Invoker<T> after = invokers.get(j);
+                if (factor * getInvokerCount(before) <= getInvokerCount(after)) {
                     // 被后面的打败了！ 重找
                     continue LOOP_BEFORE;
                 }
             }
-            break ; // 没有被打败，收工！
+            break; // 没有被打败，收工！
         }
 
         return invokers.get(i);
@@ -108,13 +106,12 @@ public class SwitchCluster implements Cluster {
             public Result doInvoke(Invocation invocation, List<Invoker<T>> invokers, LoadBalance loadbalance) throws RpcException {
                 List<Invoker<T>> effectiveInvokers = getEffectiveInvokers(invokers);
                 Invoker<T> invoker = getSuitableInvoker(effectiveInvokers, directory);
-                if(invoker != invokers.get(0)) {
-                    if(directory.getUrl().getParameter(Constants.CLUSTER_SWITCH_LOG_ERROR, true)) {
-                        if(logger.isErrorEnabled())
+                if (invoker != invokers.get(0)) {
+                    if (directory.getUrl().getParameter(Constants.CLUSTER_SWITCH_LOG_ERROR, true)) {
+                        if (logger.isErrorEnabled())
                             logger.error("SwitchCluster NOT use FIRST invoker " + invokers.get(0) + " of invoker list " + invokers);
-                    }
-                    else {
-                        if(logger.isWarnEnabled())
+                    } else {
+                        if (logger.isWarnEnabled())
                             logger.error("SwitchCluster NOT use FIRST invoker " + invokers.get(0) + " of invoker list " + invokers);
                     }
                 }

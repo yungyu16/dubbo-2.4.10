@@ -17,8 +17,8 @@ package com.alibaba.dubbo.registry.common.domain;
 
 /**
  * 负载均衡
- * @author rain.chenjr
  *
+ * @author rain.chenjr
  */
 public class LoadBalance extends Entity {
 

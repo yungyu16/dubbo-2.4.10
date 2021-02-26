@@ -17,8 +17,8 @@ package com.alibaba.dubbo.registry.common.domain;
 
 /**
  * 配置对象
- * @author rain.chenjr
  *
+ * @author rain.chenjr
  */
 public class Config extends Entity {
 
