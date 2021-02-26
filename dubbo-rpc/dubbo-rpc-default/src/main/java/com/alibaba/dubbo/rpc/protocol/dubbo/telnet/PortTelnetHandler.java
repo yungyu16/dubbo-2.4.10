@@ -1,12 +1,12 @@
 /*
  * Copyright 1999-2011 Alibaba Group.
- *  
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *  
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- *  
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -14,8 +14,6 @@
  * limitations under the License.
  */
 package com.alibaba.dubbo.rpc.protocol.dubbo.telnet;
-
-import java.util.Collection;
 
 import com.alibaba.dubbo.common.extension.Activate;
 import com.alibaba.dubbo.common.utils.StringUtils;
@@ -26,9 +24,11 @@ import com.alibaba.dubbo.remoting.telnet.TelnetHandler;
 import com.alibaba.dubbo.remoting.telnet.support.Help;
 import com.alibaba.dubbo.rpc.protocol.dubbo.DubboProtocol;
 
+import java.util.Collection;
+
 /**
  * ServerTelnetHandler
- * 
+ *
  * @author william.liangf
  */
 @Activate
@@ -45,7 +45,7 @@ public class PortTelnetHandler implements TelnetHandler {
                 if ("-l".equals(part)) {
                     detail = true;
                 } else {
-                    if (! StringUtils.isInteger(part)) {
+                    if (!StringUtils.isInteger(part)) {
                         return "Illegal port " + part + ", must be integer.";
                     }
                     port = part;

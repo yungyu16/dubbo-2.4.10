@@ -16,10 +16,6 @@
 
 package com.alibaba.dubbo.rpc.protocol.dubbo;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-
 import com.alibaba.dubbo.common.Constants;
 import com.alibaba.dubbo.common.io.UnsafeByteArrayInputStream;
 import com.alibaba.dubbo.remoting.Channel;
@@ -29,6 +25,10 @@ import com.alibaba.dubbo.remoting.exchange.Response;
 import com.alibaba.dubbo.remoting.exchange.support.MultiMessage;
 import com.alibaba.dubbo.rpc.RpcInvocation;
 import com.alibaba.dubbo.rpc.RpcResult;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 
 /**
  * @author <a href="mailto:gang.lvg@alibaba-inc.com">kimi</a>
@@ -42,7 +42,7 @@ public final class DubboCountCodec implements Codec {
     }
 
     public Object decode(Channel channel, InputStream input) throws IOException {
-        UnsafeByteArrayInputStream bis = (UnsafeByteArrayInputStream)input; // TODO 依赖非接口上的契约！调整实现！
+        UnsafeByteArrayInputStream bis = (UnsafeByteArrayInputStream) input; // TODO 依赖非接口上的契约！调整实现！
         int beginIdx = bis.position();
         MultiMessage result = MultiMessage.create();
         do {
@@ -66,18 +66,20 @@ public final class DubboCountCodec implements Codec {
     }
 
     private void logMessageLength(Object result, int bytes) {
-        if (bytes <= 0) { return; }
+        if (bytes <= 0) {
+            return;
+        }
         if (result instanceof Request) {
             try {
                 ((RpcInvocation) ((Request) result).getData()).setAttachment(
-                    Constants.INPUT_KEY, String.valueOf(bytes));
+                        Constants.INPUT_KEY, String.valueOf(bytes));
             } catch (Throwable e) {
                 /* ignore */
             }
         } else if (result instanceof Response) {
             try {
                 ((RpcResult) ((Response) result).getResult()).setAttachment(
-                    Constants.OUTPUT_KEY, String.valueOf(bytes));
+                        Constants.OUTPUT_KEY, String.valueOf(bytes));
             } catch (Throwable e) {
                 /* ignore */
             }
