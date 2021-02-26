@@ -15,13 +15,6 @@
  */
 package com.alibaba.dubbo.remoting;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import junit.framework.TestCase;
-
-import org.junit.Test;
-
 import com.alibaba.dubbo.common.Constants;
 import com.alibaba.dubbo.common.logger.Logger;
 import com.alibaba.dubbo.common.logger.LoggerFactory;
@@ -30,6 +23,11 @@ import com.alibaba.dubbo.remoting.exchange.ExchangeServer;
 import com.alibaba.dubbo.remoting.exchange.Exchangers;
 import com.alibaba.dubbo.remoting.exchange.support.ExchangeHandlerAdapter;
 import com.alibaba.dubbo.remoting.transport.dispather.execution.ExecutionDispather;
+import junit.framework.TestCase;
+import org.junit.Test;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * PerformanceServer
@@ -42,28 +40,6 @@ public class PerformanceServerTest extends TestCase {
 
     private static final Logger logger = LoggerFactory.getLogger(PerformanceServerTest.class);
     private static ExchangeServer server = null;
-
-    @Test
-    public void testServer() throws Exception {
-        // 读取参数
-        if (PerformanceUtils.getProperty("port", null) == null) {
-            logger.warn("Please set -Dport=9911");
-            return;
-        }
-        final int port = PerformanceUtils.getIntProperty("port", 9911);
-        final boolean telnet = PerformanceUtils.getBooleanProperty("telnet", true);
-        if (telnet) statTelnetServer(port + 1);
-        server = statServer();
-
-        synchronized (PerformanceServerTest.class) {
-            while (true) {
-                try {
-                    PerformanceServerTest.class.wait();
-                } catch (InterruptedException e) {
-                }
-            }
-        }
-    }
 
     private static void restartServer(int times, int alive, int sleep) throws Exception {
         if (server != null && !server.isClosed()) {
@@ -161,6 +137,28 @@ public class PerformanceServerTest extends TestCase {
         });
 
         return telnetserver;
+    }
+
+    @Test
+    public void testServer() throws Exception {
+        // 读取参数
+        if (PerformanceUtils.getProperty("port", null) == null) {
+            logger.warn("Please set -Dport=9911");
+            return;
+        }
+        final int port = PerformanceUtils.getIntProperty("port", 9911);
+        final boolean telnet = PerformanceUtils.getBooleanProperty("telnet", true);
+        if (telnet) statTelnetServer(port + 1);
+        server = statServer();
+
+        synchronized (PerformanceServerTest.class) {
+            while (true) {
+                try {
+                    PerformanceServerTest.class.wait();
+                } catch (InterruptedException e) {
+                }
+            }
+        }
     }
 
 }

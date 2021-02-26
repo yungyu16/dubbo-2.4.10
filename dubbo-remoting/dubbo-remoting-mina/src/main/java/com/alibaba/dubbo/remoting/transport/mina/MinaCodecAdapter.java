@@ -1,12 +1,12 @@
 /*
  * Copyright 1999-2011 Alibaba Group.
- *  
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *  
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- *  
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -14,16 +14,6 @@
  * limitations under the License.
  */
 package com.alibaba.dubbo.remoting.transport.mina;
-
-import java.io.IOException;
-
-import org.apache.mina.common.ByteBuffer;
-import org.apache.mina.common.IoSession;
-import org.apache.mina.filter.codec.ProtocolCodecFactory;
-import org.apache.mina.filter.codec.ProtocolDecoder;
-import org.apache.mina.filter.codec.ProtocolDecoderOutput;
-import org.apache.mina.filter.codec.ProtocolEncoder;
-import org.apache.mina.filter.codec.ProtocolEncoderOutput;
 
 import com.alibaba.dubbo.common.Constants;
 import com.alibaba.dubbo.common.URL;
@@ -33,28 +23,33 @@ import com.alibaba.dubbo.common.io.UnsafeByteArrayOutputStream;
 import com.alibaba.dubbo.remoting.Channel;
 import com.alibaba.dubbo.remoting.ChannelHandler;
 import com.alibaba.dubbo.remoting.Codec;
+import org.apache.mina.common.ByteBuffer;
+import org.apache.mina.common.IoSession;
+import org.apache.mina.filter.codec.*;
+
+import java.io.IOException;
 
 /**
  * MinaCodecAdapter.
- * 
+ *
  * @author qian.lei
  */
 final class MinaCodecAdapter implements ProtocolCodecFactory {
 
-    private static final String   BUFFER_KEY          = MinaCodecAdapter.class.getName() + ".BUFFER";
+    private static final String BUFFER_KEY = MinaCodecAdapter.class.getName() + ".BUFFER";
 
-    private final ProtocolEncoder encoder            = new InternalEncoder();
+    private final ProtocolEncoder encoder = new InternalEncoder();
 
-    private final ProtocolDecoder decoder            = new InternalDecoder();
+    private final ProtocolDecoder decoder = new InternalDecoder();
 
-    private final Codec           codec;
+    private final Codec codec;
 
-    private final URL             url;
-    
-    private final ChannelHandler  handler;
+    private final URL url;
 
-    private final int            bufferSize;
-    
+    private final ChannelHandler handler;
+
+    private final int bufferSize;
+
     public MinaCodecAdapter(Codec codec, URL url, ChannelHandler handler) {
         this.codec = codec;
         this.url = url;
@@ -80,7 +75,7 @@ final class MinaCodecAdapter implements ProtocolCodecFactory {
             UnsafeByteArrayOutputStream os = new UnsafeByteArrayOutputStream(1024); // 不需要关闭
             MinaChannel channel = MinaChannel.getOrAddChannel(session, url, handler);
             try {
-            	codec.encode(channel, os, msg);
+                codec.encode(channel, os, msg);
             } finally {
                 MinaChannel.removeChannelIfDisconnectd(session);
             }
@@ -161,7 +156,7 @@ final class MinaCodecAdapter implements ProtocolCodecFactory {
                         off = 0;
                         limit = len;
                     }
-                    session.setAttribute(BUFFER_KEY, new Object[] { buf, off, limit });
+                    session.setAttribute(BUFFER_KEY, new Object[]{buf, off, limit});
                 } else {
                     session.removeAttribute(BUFFER_KEY);
                 }

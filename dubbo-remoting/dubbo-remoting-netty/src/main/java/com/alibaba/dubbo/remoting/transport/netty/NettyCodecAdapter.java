@@ -1,12 +1,12 @@
 /*
  * Copyright 1999-2011 Alibaba Group.
- *  
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *  
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- *  
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -15,44 +15,37 @@
  */
 package com.alibaba.dubbo.remoting.transport.netty;
 
-import java.io.IOException;
-
-import org.jboss.netty.buffer.ChannelBuffer;
-import org.jboss.netty.buffer.ChannelBuffers;
-import org.jboss.netty.channel.Channel;
-import org.jboss.netty.channel.ChannelHandler;
-import org.jboss.netty.channel.ChannelHandler.Sharable;
-import org.jboss.netty.channel.ChannelHandlerContext;
-import org.jboss.netty.channel.Channels;
-import org.jboss.netty.channel.ExceptionEvent;
-import org.jboss.netty.channel.MessageEvent;
-import org.jboss.netty.channel.SimpleChannelUpstreamHandler;
-import org.jboss.netty.handler.codec.oneone.OneToOneEncoder;
-
 import com.alibaba.dubbo.common.Constants;
 import com.alibaba.dubbo.common.URL;
 import com.alibaba.dubbo.common.io.Bytes;
 import com.alibaba.dubbo.common.io.UnsafeByteArrayInputStream;
 import com.alibaba.dubbo.common.io.UnsafeByteArrayOutputStream;
 import com.alibaba.dubbo.remoting.Codec;
+import org.jboss.netty.buffer.ChannelBuffer;
+import org.jboss.netty.buffer.ChannelBuffers;
+import org.jboss.netty.channel.*;
+import org.jboss.netty.channel.ChannelHandler.Sharable;
+import org.jboss.netty.handler.codec.oneone.OneToOneEncoder;
+
+import java.io.IOException;
 
 /**
  * NettyCodecAdapter.
- * 
+ *
  * @author qian.lei
  */
 final class NettyCodecAdapter {
 
     private final ChannelHandler encoder = new InternalEncoder();
-    
+
     private final ChannelHandler decoder = new InternalDecoder();
 
-    private final Codec          codec;
-    
-    private final URL            url;
-    
-    private final int            bufferSize;
-    
+    private final Codec codec;
+
+    private final URL url;
+
+    private final int bufferSize;
+
     private final com.alibaba.dubbo.remoting.ChannelHandler handler;
 
     public NettyCodecAdapter(Codec codec, URL url, com.alibaba.dubbo.remoting.ChannelHandler handler) {
@@ -79,7 +72,7 @@ final class NettyCodecAdapter {
             UnsafeByteArrayOutputStream os = new UnsafeByteArrayOutputStream(1024); // 不需要关闭
             NettyChannel channel = NettyChannel.getOrAddChannel(ch, url, handler);
             try {
-            	codec.encode(channel, os, msg);
+                codec.encode(channel, os, msg);
             } finally {
                 NettyChannel.removeChannelIfDisconnected(ch);
             }
@@ -89,14 +82,14 @@ final class NettyCodecAdapter {
 
     private class InternalDecoder extends SimpleChannelUpstreamHandler {
 
-        private int    mOffset = 0, mLimit = 0;
+        private int mOffset = 0, mLimit = 0;
 
         private byte[] mBuffer = null;
 
         @Override
         public void messageReceived(ChannelHandlerContext ctx, MessageEvent event) throws Exception {
             Object o = event.getMessage();
-            if (! (o instanceof ChannelBuffer)) {
+            if (!(o instanceof ChannelBuffer)) {
                 ctx.sendUpstream(event);
                 return;
             }
