@@ -22,36 +22,21 @@ package com.alibaba.dubbo.registry.common.domain;
  */
 public class Change extends Entity {
 
-    private static final long serialVersionUID = 15528419903956898L;
-
     public static final String PROVIDER_TYPE = "P";     //服务提供变更
-
     public static final String CONSUMER_TYPE = "N";     //服务消费者变更
-
     public static final String ROUTE_TYPE = "R";        //路由变更
-
     public static final String WEIGHT_TYPE = "W";       //权重变更
-
     public static final String LOADBALANCE_TYPE = "L";  //负载均衡变更
-
     public static final String CLUSTER_TYPE = "G";      //分组变更
-
     public static final String USER_TYPE = "U";         //用户变更
-
     public static final String CONFIG_TYPE = "C";       //系统配置变更
-
     public static final String FEATURE_TYPE = "F";      //系统功能变更
-
     public static final String LAYER_TYPE = "Y";      //系统功能变更
-
     public static final String TEST_TYPE = "T";         //服务测试变更
-
     public static final String MOCK_TYPE = "M";         //服务测试变更
-
     public static final String ACCESS_TYPE = "A";       //服务访问控制变更
-
     public static final String OVERRIDE_TYPE = "O";     //参数覆盖变更
-
+    private static final long serialVersionUID = 15528419903956898L;
     private String type;                    /* 变更类型 */
 
     private String service;                 /* 服务名称 */

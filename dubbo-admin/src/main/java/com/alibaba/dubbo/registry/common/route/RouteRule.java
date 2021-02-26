@@ -33,12 +33,12 @@ import java.util.regex.Pattern;
  * 使用条件对样本进行的匹配的过程称为“过滤”（或称为“筛选”）（Filter）。
  * 使用When条件过滤和使用Then条件过滤的样本，不需要是相同的集合。如在Dubbo中，分别对应的是Consumer和Provider。
  * 对于RouteRule（路由规则）含义即，符合When条件的Consumer，则对Provider进行Then过滤，出来的Provide即是提供给这个Consumer的Provider。<br>
- *
+ * <p>
  * Rule的字符串格式如下：<code>
  * key1 = value11,value12 & key2 = value21 & key2 != value22 => key3 = value3 & key4 = value41,vlaue42 & key5 !=value51
  * </code>。
  * <code>=></code>之前的称为When条件，是KV对；之后是Then条件，是KV对。KV的Value可以有多个值。<br><br>
- *
+ * <p>
  * 值对象，线程安全。
  *
  * @author william.liangf
@@ -140,11 +140,11 @@ public class RouteRule {
      * 把字符串形式的RouteRule的解析成对象。
      *
      * @throws ParseException RouteRule字符串格式不对了。以下输入的情况，RouteRule都是非法的。
-     * <ul> <li> 输入是<code>null</code>。
-     * <li> 输入是空串，或是空白串。
-     * <li> 输入的Rule，没有When条件
-     * <li> 输入的Rule，没有Then条件
-     * </ul>
+     *                        <ul> <li> 输入是<code>null</code>。
+     *                        <li> 输入是空串，或是空白串。
+     *                        <li> 输入的Rule，没有When条件
+     *                        <li> 输入的Rule，没有Then条件
+     *                        </ul>
      */
     public static RouteRule parse(Route route) throws ParseException {
         if (route == null)
@@ -181,8 +181,8 @@ public class RouteRule {
     }
 
     /**
-     * @see #parse(String)
      * @throws RuntimeException 解析出错时，Wrap了{@link #parse(String)}方法的抛出的{@link ParseException}的异常。
+     * @see #parse(String)
      */
     public static RouteRule parseQuitely(Route route) {
         try {
@@ -284,7 +284,7 @@ public class RouteRule {
     /**
      * 使用新的条件值来替换。
      *
-     * @param copy 替换的Base
+     * @param copy          替换的Base
      * @param whenCondition 要替换的whenCondition，如果Base没有项目，则直接插入。
      * @param thenCondition 要替换的thenCondition，如果Base没有项目，则直接插入。
      * @return 替换后的RouteRule

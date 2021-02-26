@@ -1,12 +1,12 @@
 /*
  * Copyright 1999-2011 Alibaba Group.
- *  
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *  
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- *  
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -23,10 +23,19 @@ import com.alibaba.dubbo.remoting.transport.ChannelHandlerDispatcher;
 
 /**
  * Transporter facade. (API, Static, ThreadSafe)
- * 
+ *
  * @author william.liangf
  */
 public class Transporters {
+
+    static {
+        // check duplicate jar package
+        Version.checkDuplicate(Transporters.class);
+        Version.checkDuplicate(RemotingException.class);
+    }
+
+    private Transporters() {
+    }
 
     public static Server bind(String url, ChannelHandler... handler) throws RemotingException {
         return bind(URL.valueOf(url), handler);
@@ -69,15 +78,6 @@ public class Transporters {
 
     public static Transporter getTransporter() {
         return ExtensionLoader.getExtensionLoader(Transporter.class).getAdaptiveExtension();
-    }
-
-    static {
-        // check duplicate jar package
-        Version.checkDuplicate(Transporters.class);
-        Version.checkDuplicate(RemotingException.class);
-    }
-
-    private Transporters(){
     }
 
 }

@@ -87,6 +87,7 @@ public class ParseUtils {
 
     /**
      * 匹配Glob模式。目前的实现只支持<code>*</code>，且只支持一个。不支持<code>?</code>。
+     *
      * @return 对于方法参数pattern或是value为<code>null</code>的情况，直接返回<code>false</code>。
      */
     public static boolean isMatchGlobPattern(String pattern, String value) {
@@ -215,9 +216,9 @@ public class ParseUtils {
      * 把Query String解析成Map。对于有只有Key的串<code>key3=</code>，忽略。
      *
      * @param keyPrefix 在输出的Map的Key加上统一前缀。
-     * @param query Query String，形如：<code>key1=value1&key2=value2</code>
+     * @param query     Query String，形如：<code>key1=value1&key2=value2</code>
      * @return Query String为<code>key1=value1&key2=value2</code>，前缀为<code>pre.</code>时，
-     *         则返回<code>Map{pre.key1=value1, pre.key=value2}</code>。
+     * 则返回<code>Map{pre.key1=value1, pre.key=value2}</code>。
      */
     // FIXME 抛出的是IllegalStateException异常，是否合理？！
     public static Map<String, String> parseQuery(String keyPrefix, String query) {

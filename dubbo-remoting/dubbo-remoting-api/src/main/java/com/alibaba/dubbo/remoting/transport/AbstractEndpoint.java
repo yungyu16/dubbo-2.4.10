@@ -1,12 +1,12 @@
 /*
  * Copyright 1999-2011 Alibaba Group.
- *  
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *  
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- *  
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -26,19 +26,19 @@ import com.alibaba.dubbo.remoting.Codec;
 
 /**
  * AbstractEndpoint
- * 
+ *
  * @author william.liangf
  */
 public abstract class AbstractEndpoint extends AbstractPeer implements Resetable {
-    
+
     private static final Logger logger = LoggerFactory.getLogger(AbstractEndpoint.class);
 
-    private Codec                 codec;
+    private Codec codec;
 
-    private int                   timeout;
+    private int timeout;
 
-    private int                   connectTimeout;
-    
+    private int connectTimeout;
+
     public AbstractEndpoint(URL url, ChannelHandler handler) {
         super(url, handler);
         this.codec = ExtensionLoader.getExtensionLoader(Codec.class).getExtension(url.getParameter(Constants.CODEC_KEY, "telnet"));
@@ -49,7 +49,7 @@ public abstract class AbstractEndpoint extends AbstractPeer implements Resetable
     public void reset(URL url) {
         if (isClosed()) {
             throw new IllegalStateException("Failed to reset parameters "
-                                        + url + ", cause: Channel closed. channel: " + getLocalAddress());
+                    + url + ", cause: Channel closed. channel: " + getLocalAddress());
         }
         try {
             if (url.hasParameter(Constants.HEARTBEAT_KEY)) {
@@ -80,9 +80,9 @@ public abstract class AbstractEndpoint extends AbstractPeer implements Resetable
             logger.error(t.getMessage(), t);
         }
     }
-    
+
     @Deprecated
-    public void reset(com.alibaba.dubbo.common.Parameters parameters){
+    public void reset(com.alibaba.dubbo.common.Parameters parameters) {
         reset(getUrl().addParameters(parameters.getParameters()));
     }
 

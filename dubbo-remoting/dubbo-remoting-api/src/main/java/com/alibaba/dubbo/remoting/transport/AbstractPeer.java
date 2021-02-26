@@ -1,12 +1,12 @@
 /*
  * Copyright 1999-2011 Alibaba Group.
- *  
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *  
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- *  
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -24,7 +24,7 @@ import com.alibaba.dubbo.remoting.RemotingException;
 
 /**
  * AbstractPeer
- * 
+ *
  * @author qian.lei
  * @author william.liangf
  */
@@ -32,9 +32,9 @@ public abstract class AbstractPeer implements Endpoint, ChannelHandler {
 
     private final ChannelHandler handler;
 
-    private volatile URL         url;
+    private volatile URL url;
 
-    private volatile boolean     closed;
+    private volatile boolean closed;
 
     public AbstractPeer(URL url, ChannelHandler handler) {
         if (url == null) {
@@ -77,7 +77,7 @@ public abstract class AbstractPeer implements Endpoint, ChannelHandler {
             return handler;
         }
     }
-    
+
     /**
      * @return ChannelHandler
      */
@@ -85,15 +85,16 @@ public abstract class AbstractPeer implements Endpoint, ChannelHandler {
     public ChannelHandler getHandler() {
         return getDelegateHandler();
     }
-    
+
     /**
      * 返回最终的handler，可能已被wrap,需要区别于getChannelHandler
+     *
      * @return ChannelHandler
      */
     public ChannelHandler getDelegateHandler() {
         return handler;
     }
-    
+
     public boolean isClosed() {
         return closed;
     }

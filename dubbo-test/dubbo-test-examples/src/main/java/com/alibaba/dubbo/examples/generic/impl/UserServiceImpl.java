@@ -19,7 +19,6 @@ import com.alibaba.dubbo.examples.generic.api.IUserService;
 
 /**
  * @author chao.liuc
- *
  */
 public class UserServiceImpl implements IUserService {
 

@@ -94,12 +94,12 @@ public class RouteUtils {
     }
 
     /**
-     * @param serviceName 服务名，如{@code com.alibaba.morgan.MemberService}
-     * @param consumerAddress 消费者地址，如{@code 192.168.1.3:54333}
+     * @param serviceName      服务名，如{@code com.alibaba.morgan.MemberService}
+     * @param consumerAddress  消费者地址，如{@code 192.168.1.3:54333}
      * @param consumerQueryUrl 订阅参数，如 <code>aplication=nasdaq&dubbo=2.0.3&methods=updateItems,validateNew&revision=1.7.0</code>
-     * @param serviceUrls 提供者
-     * @param routes 全部路由
-     * @param clusters 全部的集群
+     * @param serviceUrls      提供者
+     * @param routes           全部路由
+     * @param clusters         全部的集群
      * @return 返回路由结果， Map<url-body, url-params>
      */
     // FIXME clusters和routes的合并，可以在clusters或routes变化时预先做
